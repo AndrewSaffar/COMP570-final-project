@@ -106,7 +106,7 @@ def main():
     if series:
         df = pd.concat(series, ignore_index=True)
         OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-        df.to_csv(OUTPUT_FILE, index=False)
+        df.to_csv(OUTPUT_FILE, columns=["season_number", "episode_number", "episode_name", "character", "content"], index=False)
 
         print(f"Scraping successful. Output at: {OUTPUT_FILE}")
         print(f"Total number of scrapes lines: {len(df)}")
