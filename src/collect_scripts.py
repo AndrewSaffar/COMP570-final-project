@@ -61,7 +61,7 @@ def scrape_transcript(link, episode_name):
                     if len(content) == 0:
                         content = text
                     else:
-                        content += '\n' + text
+                        content += ' ' + text
             transcript.append({'episode_name': episode_name, 'character': character, 'content': content})  
     transcript = pd.DataFrame(transcript)
     return transcript
