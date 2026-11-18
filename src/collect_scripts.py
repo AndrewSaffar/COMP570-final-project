@@ -46,7 +46,7 @@ def scrape_transcript(link, episode_name):
     for b_tag in script.find_all("b"):
         if len(b_tag.get_text(strip=True)) == 0 and len(b_tag.find_all()) == 0:
             b_tag.decompose()
-            continue
+    for b_tag in script.find_all("b"):
         if len(title) == 0:
             title = b_tag.get_text().strip()
         else:
