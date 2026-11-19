@@ -5,6 +5,7 @@ import pandas as pd
 
 DATA_DIR = Path(__file__).parent.parent / "data"
 RAW_DATA_DIR = DATA_DIR / "test_raw"
+CHARACTERS = ["rachel", "monica", "joey"]
 
 def get_all_script_files():
     if RAW_DATA_DIR.exists():
@@ -30,18 +31,29 @@ def get_title(soup):
     title = soup.title
     if title is None: # Error with season 8, episode 17
         title = soup.find("h1")   
-    return title.get_text().strip()     
+    return title.get_text().strip()  
+
+def check_side_character(character):
+    characters = re.split(r",|\s+and\s+", character) # For when there are multiple characters
+    for character in characters:
+        if character.strip().lower() in CHARACTERS:
+            return True
+    return False
 
 def extract_line(raw_line):
     bold = raw_line.find("b")
     if bold is not None:
         bold_string = bold.get_text().strip()
-        if bold_string.lower() != "end":
+        if bold_string.lower() != "end": # Excludes END
             character = bold_string[:-1] # Remove ":"
-            bold.extract() # Remove the character from the line
-            line = raw_line.text.strip()
-            line = re.sub(r"\s+", " ", line) # Make better whitespaces
-            return character, line
+            is_side_character = check_side_character(character)
+            if is_side_character:
+                bold.extract() # Remove the character from the line
+                line = raw_line.text.strip()
+                line = re.sub(r"\s+", " ", line) # Make better whitespaces
+                no_stage_directions = re.sub(r"\(.*?\)", " ", line) # Do not count stage directions in word count
+                if len(no_stage_directions.split()) >= 15: # Removes banter
+                    return character, line
     return None, None
 
 def get_episode_dialogue(soup):
