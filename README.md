@@ -1,0 +1,1 @@
+Transcripts downloaded on the 18th of November at 16:52 from https://www.friends-tv.org/transcripts.html 
