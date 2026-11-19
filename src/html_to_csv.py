@@ -1,10 +1,12 @@
 import re
+import pandas as pd
+from tqdm import tqdm
 from pathlib import Path
 from bs4 import BeautifulSoup
-import pandas as pd
 
 DATA_DIR = Path(__file__).parent.parent / "data"
-RAW_DATA_DIR = DATA_DIR / "test_raw"
+RAW_DATA_DIR = DATA_DIR / "raw"
+OUTPUT_FILE = DATA_DIR / "friends.csv"
 CHARACTERS = ["rachel", "monica", "joey"]
 
 def get_all_script_files():
@@ -73,7 +75,7 @@ def get_episode_dialogue(soup):
 def main():
     df = pd.DataFrame(columns=["season", "episode", "title", "character", "line"])
     htm_files = get_all_script_files()    
-    for file in htm_files:
+    for file in tqdm(htm_files):
         season, episode = get_season_episode(file)
 
         with open(file, "r", encoding="utf-8", errors="replace") as file: # See if we could do errors="ignore" instead of "replace"
@@ -81,7 +83,6 @@ def main():
         soup = BeautifulSoup(content, "html5lib") # Address paragraphs with wrong closing tag
         soup = soup.prettify()
         soup = BeautifulSoup(soup, "html.parser")
-
 
         title = get_title(soup)
         episode_df = get_episode_dialogue(soup)
@@ -92,7 +93,7 @@ def main():
 
         df = pd.concat([df, episode_df], ignore_index = True)
 
-    df.to_csv(DATA_DIR / "friends.csv")
+    df.to_csv(OUTPUT_FILE)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,12 @@
+beautifulsoup4==4.15.0
+html5lib==1.1
+numpy==2.5.5
+pandas==3.1.1
+pathlib==1.0.1
+python-dateutil==4.0.0
+six==1.17.0
+soupsieve==4.1.2
+tqdm==4.70.1
+typing_extensions==4.16.0
+tzdata==2026.6
+webencodings==0.6.1
