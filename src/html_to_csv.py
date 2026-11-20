@@ -53,7 +53,7 @@ def extract_line(raw_line):
                 bold.extract() # Remove the character from the line
                 line = raw_line.text.strip()
                 line = re.sub(r"\s+", " ", line) # Make better whitespaces
-                no_stage_directions = re.sub(r"\(.*?\)", " ", line) # Do not count stage directions in word count
+                no_stage_directions = re.sub(r"(?:\(.*?\)|\[.*?\])", " ", line) # Do not count stage directions in word count
                 if len(no_stage_directions.split()) >= 15: # Removes banter
                     return character, line
     return None, None
@@ -93,7 +93,7 @@ def main():
 
         df = pd.concat([df, episode_df], ignore_index = True)
 
-    df.to_csv(OUTPUT_FILE)
+    df.to_csv(OUTPUT_FILE, index=False)
 
 
 if __name__ == "__main__":
